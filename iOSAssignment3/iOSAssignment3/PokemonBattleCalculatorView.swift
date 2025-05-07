@@ -7,9 +7,29 @@
 
 import SwiftUI
 
+// MARK: - Pokedex Model
+struct PokedexEntry: Decodable, Identifiable {
+    let id: Int
+    struct Name: Decodable { let english: String }
+    let name: Name
+    struct ImageURLs: Decodable { let sprite: String }
+    let image: ImageURLs
+}
+
+// Load and sort all entries from pokedex.json in the bundle
+let allPokedexEntries: [PokedexEntry] = {
+    guard let url = Bundle.main.url(forResource: "pokedex", withExtension: "json"),
+          let data = try? Data(contentsOf: url),
+          let entries = try? JSONDecoder().decode([PokedexEntry].self, from: data) else {
+        return []
+    }
+    return entries.sorted { $0.id < $1.id }
+}()
+
+// MARK: - Main Calculator View
 struct PokemonBattleCalculatorView: View {
-    @State private var selectedPokemon1: String? = nil
-    @State private var selectedPokemon2: String? = nil
+    @State private var selectedPokemon1: PokedexEntry? = nil
+    @State private var selectedPokemon2: PokedexEntry? = nil
     @State private var showingSelectorForFirst = false
     @State private var showingSelectorForSecond = false
 
@@ -17,139 +37,157 @@ struct PokemonBattleCalculatorView: View {
         NavigationView {
             VStack(spacing: 20) {
                 HStack(spacing: 30) {
-                    SelectionButton(title: selectedPokemon1 ?? "Select Pokémon 1") {
-                        showingSelectorForFirst = true
-                    }
-                    SelectionButton(title: selectedPokemon2 ?? "Select Pokémon 2") {
-                        showingSelectorForSecond = true
-                    }
+                    SelectionBox(entry: selectedPokemon1,
+                                 placeholder: "1",
+                                 action: { showingSelectorForFirst = true })
+                    SelectionBox(entry: selectedPokemon2,
+                                 placeholder: "2",
+                                 action: { showingSelectorForSecond = true })
                 }
                 .padding(.top)
 
                 Spacer()
 
-                VStack(alignment: .leading, spacing: 10) {
-                    if let p1 = selectedPokemon1 {
-                        Text("\(p1) Moves")
-                            .font(.headline)
-                        ForEach(0..<4) { index in
-                            MoveRow(moveName: "Move \(index + 1)", damageText: "-- dmg")
-                        }
-                    }
+                if let p1 = selectedPokemon1 {
+                    MoveListView(pokemonName: p1.name.english)
                 }
-                .padding()
-
-                VStack(alignment: .leading, spacing: 10) {
-                    if let p2 = selectedPokemon2 {
-                        Text("\(p2) Moves")
-                            .font(.headline)
-                        ForEach(0..<4) { index in
-                            MoveRow(moveName: "Move \(index + 1)", damageText: "-- dmg")
-                        }
-                    }
+                if let p2 = selectedPokemon2 {
+                    MoveListView(pokemonName: p2.name.english)
                 }
-                .padding()
 
                 Spacer()
             }
             .navigationTitle("Battle Calculator")
             .sheet(isPresented: $showingSelectorForFirst) {
-                PokemonSelectionView(gen1Pokemon: gen1Pokemon, onSelect: { name in
-                    selectedPokemon1 = name
-                    showingSelectorForFirst = false
-                }, title: "Select Pokémon 1")
+                PokemonSelectionView(
+                    entries: allPokedexEntries,
+                    onSelect: { entry in
+                        selectedPokemon1 = entry
+                        showingSelectorForFirst = false
+                    },
+                    title: "Select Pokémon 1"
+                )
             }
             .sheet(isPresented: $showingSelectorForSecond) {
-                PokemonSelectionView(gen1Pokemon: gen1Pokemon, onSelect: { name in
-                    selectedPokemon2 = name
-                    showingSelectorForSecond = false
-                }, title: "Select Pokémon 2")
+                PokemonSelectionView(
+                    entries: allPokedexEntries,
+                    onSelect: { entry in
+                        selectedPokemon2 = entry
+                        showingSelectorForSecond = false
+                    },
+                    title: "Select Pokémon 2"
+                )
             }
         }
     }
-
-    // Sample Gen 1 list
-    let gen1Pokemon = ["Bulbasaur", "Charmander", "Squirtle", "Pikachu", "Eevee", "Jigglypuff", "Meowth", "Psyduck", "Snorlax", "Mewtwo"]
 }
 
-// Button styled for selection
-struct SelectionButton: View {
-    let title: String
+// MARK: - Selection Box
+struct SelectionBox: View {
+    let entry: PokedexEntry?
+    let placeholder: String
     let action: () -> Void
 
     var body: some View {
         Button(action: action) {
-            Text(title)
-                .foregroundColor(.white)
-                .frame(width: 140, height: 140)
-                .background(Color.blue)
-                .cornerRadius(12)
+            ZStack {
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(Color.blue)
+                    .frame(width: 140, height: 140)
+                if let entry = entry, let url = URL(string: entry.image.sprite) {
+                    AsyncImage(url: url) { phase in
+                        if let img = phase.image {
+                            img
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 100, height: 100)
+                        } else if phase.error != nil {
+                            Image(systemName: "exclamationmark.triangle")
+                                .foregroundColor(.red)
+                                .font(.largeTitle)
+                        } else {
+                            ProgressView()
+                        }
+                    }
+                } else {
+                    Text("Select \(placeholder)")
+                        .foregroundColor(.white)
+                        .bold()
+                }
+            }
         }
     }
 }
 
-// Row for move display
-struct MoveRow: View {
-    let moveName: String
-    let damageText: String
-
+// MARK: - Move List Placeholder
+struct MoveListView: View {
+    let pokemonName: String
     var body: some View {
-        HStack {
-            Text(moveName)
-            Spacer()
-            Text(damageText)
-                .foregroundColor(.secondary)
+        VStack(alignment: .leading, spacing: 10) {
+            Text("\(pokemonName) Moves")
+                .font(.headline)
+            ForEach(0..<4) { idx in
+                HStack {
+                    Text("Move \(idx+1)")
+                    Spacer()
+                    Text("-- dmg")
+                        .foregroundColor(.secondary)
+                }
+            }
         }
+        .padding()
     }
 }
 
-// Pokémon selection screen
+// MARK: - Pokémon Selection Screen
 struct PokemonSelectionView: View {
-    let gen1Pokemon: [String]
-    let onSelect: (String) -> Void
+    let entries: [PokedexEntry]
+    let onSelect: (PokedexEntry) -> Void
     let title: String
 
     @State private var searchText: String = ""
 
-    // Filtered list
-    var filteredList: [String] {
-        if searchText.isEmpty {
-            return gen1Pokemon
-        } else {
-            return gen1Pokemon.filter { $0.localizedCaseInsensitiveContains(searchText) }
+    var filteredEntries: [PokedexEntry] {
+        let list = entries.filter { entry in
+            searchText.isEmpty || entry.name.english.localizedCaseInsensitiveContains(searchText)
         }
+        return list.sorted { $0.id < $1.id }
     }
 
-    // Grid layout
     let columns = [GridItem(.adaptive(minimum: 80), spacing: 16)]
 
     var body: some View {
         NavigationView {
             VStack {
-                // Search box
                 TextField("Search Pokémon", text: $searchText)
                     .padding(8)
                     .background(Color(.systemGray6))
                     .cornerRadius(8)
-                    .padding()
+                    .padding([.horizontal, .top])
 
                 ScrollView {
                     LazyVGrid(columns: columns, spacing: 16) {
-                        ForEach(filteredList, id: \.self) { name in
+                        ForEach(filteredEntries) { entry in
                             VStack {
-                                // Placeholder for sprite
-                                Rectangle()
-                                    .fill(Color.gray.opacity(0.3))
-                                    .frame(width: 80, height: 80)
-                                    .overlay(
-                                        Text("🖼️")
-                                    )
-                                Text(name)
+                                AsyncImage(url: URL(string: entry.image.sprite)) { phase in
+                                    if let img = phase.image {
+                                        img
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width: 80, height: 80)
+                                    } else if phase.error != nil {
+                                        Color.red.frame(width: 80, height: 80)
+                                    } else {
+                                        Color.gray.opacity(0.3)
+                                            .frame(width: 80, height: 80)
+                                    }
+                                }
+                                Text(entry.name.english)
                                     .font(.caption)
                                     .lineLimit(1)
                             }
                             .onTapGesture {
-                                onSelect(name)
+                                onSelect(entry)
                             }
                         }
                     }
@@ -160,7 +198,7 @@ struct PokemonSelectionView: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {
-                        onSelect("")
+                        onSelect(entries.first!)
                     }
                 }
             }

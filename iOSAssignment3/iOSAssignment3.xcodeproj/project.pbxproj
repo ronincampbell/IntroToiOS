@@ -6,6 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		CE61AD7A2DCB31F900C81FBB /* pokedex.json in Resources */ = {isa = PBXBuildFile; fileRef = CE61AD782DCB315200C81FBB /* pokedex.json */; };
+		CE61AD7B2DCB31F900C81FBB /* types.json in Resources */ = {isa = PBXBuildFile; fileRef = CE61AD792DCB315200C81FBB /* types.json */; };
+		CE61AD7C2DCB31F900C81FBB /* moves.json in Resources */ = {isa = PBXBuildFile; fileRef = CE61AD772DCB315200C81FBB /* moves.json */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		CE12A86E2DC478C500DC59E1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -27,6 +33,9 @@
 		CE12A85D2DC478C300DC59E1 /* iOSAssignment3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOSAssignment3.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE12A86D2DC478C500DC59E1 /* iOSAssignment3Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iOSAssignment3Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE12A8772DC478C500DC59E1 /* iOSAssignment3UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iOSAssignment3UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE61AD772DCB315200C81FBB /* moves.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = moves.json; sourceTree = "<group>"; };
+		CE61AD782DCB315200C81FBB /* pokedex.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = pokedex.json; sourceTree = "<group>"; };
+		CE61AD792DCB315200C81FBB /* types.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = types.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -75,6 +84,7 @@
 		CE12A8542DC478C300DC59E1 = {
 			isa = PBXGroup;
 			children = (
+				CE61AD762DCB2FEF00C81FBB /* Data */,
 				CE12A85F2DC478C300DC59E1 /* iOSAssignment3 */,
 				CE12A8702DC478C500DC59E1 /* iOSAssignment3Tests */,
 				CE12A87A2DC478C500DC59E1 /* iOSAssignment3UITests */,
@@ -90,6 +100,16 @@
 				CE12A8772DC478C500DC59E1 /* iOSAssignment3UITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		CE61AD762DCB2FEF00C81FBB /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				CE61AD772DCB315200C81FBB /* moves.json */,
+				CE61AD782DCB315200C81FBB /* pokedex.json */,
+				CE61AD792DCB315200C81FBB /* types.json */,
+			);
+			path = Data;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -212,6 +232,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE61AD7A2DCB31F900C81FBB /* pokedex.json in Resources */,
+				CE61AD7B2DCB31F900C81FBB /* types.json in Resources */,
+				CE61AD7C2DCB31F900C81FBB /* moves.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
