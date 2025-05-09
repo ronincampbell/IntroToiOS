@@ -12,6 +12,7 @@
 		6AFAD0CD2DCDB43600063E06 /* iOSAssignment3App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AFAD0CC2DCDB43600063E06 /* iOSAssignment3App.swift */; };
 		6AFAD0D12DCDB43900063E06 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6AFAD0D02DCDB43900063E06 /* Assets.xcassets */; };
 		6AFAD0D42DCDB43900063E06 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6AFAD0D32DCDB43900063E06 /* Preview Assets.xcassets */; };
+		CE8C96522DCDB8DC0005C5B5 /* todo.txt in Resources */ = {isa = PBXBuildFile; fileRef = CE8C96512DCDB8DC0005C5B5 /* todo.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,6 +22,7 @@
 		6AFAD0CC2DCDB43600063E06 /* iOSAssignment3App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSAssignment3App.swift; sourceTree = "<group>"; };
 		6AFAD0D02DCDB43900063E06 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6AFAD0D32DCDB43900063E06 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		CE8C96512DCDB8DC0005C5B5 /* todo.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = todo.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +60,7 @@
 				6A4D4FF42DCDB68900515AE4 /* PokemonBattleCalculatorView.swift */,
 				6AFAD0D02DCDB43900063E06 /* Assets.xcassets */,
 				6AFAD0D22DCDB43900063E06 /* Preview Content */,
+				CE8C96512DCDB8DC0005C5B5 /* todo.txt */,
 			);
 			path = iOSAssignment3;
 			sourceTree = "<group>";
@@ -128,6 +131,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE8C96522DCDB8DC0005C5B5 /* todo.txt in Resources */,
 				6AFAD0D42DCDB43900063E06 /* Preview Assets.xcassets in Resources */,
 				6AFAD0D12DCDB43900063E06 /* Assets.xcassets in Resources */,
 				6A4D4FF72DCDB6EF00515AE4 /* Data in Resources */,

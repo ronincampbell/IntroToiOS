@@ -1,0 +1,3 @@
+- Input specific level
+- Select 1 move to calculate damage of
+    - 

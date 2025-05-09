@@ -145,13 +145,13 @@ struct PokemonSelectionView: View {
     let onSelect: (PokedexEntry) -> Void
     let title: String
 
+    @Environment(\.dismiss) private var dismiss
     @State private var searchText: String = ""
 
     var filteredEntries: [PokedexEntry] {
-        let list = entries.filter { entry in
-            searchText.isEmpty || entry.name.english.localizedCaseInsensitiveContains(searchText)
-        }
-        return list.sorted { $0.id < $1.id }
+        entries
+            .filter { searchText.isEmpty || $0.name.english.localizedCaseInsensitiveContains(searchText) }
+            .sorted { $0.id < $1.id }
     }
 
     let columns = [GridItem(.adaptive(minimum: 80), spacing: 16)]
@@ -198,13 +198,14 @@ struct PokemonSelectionView: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {
-                        onSelect(entries.first!)
+                        dismiss()
                     }
                 }
             }
         }
     }
 }
+
 
 struct PokemonBattleCalculatorView_Previews: PreviewProvider {
     static var previews: some View {
