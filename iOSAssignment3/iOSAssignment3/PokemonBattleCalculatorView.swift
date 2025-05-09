@@ -18,11 +18,12 @@ struct PokedexEntry: Decodable, Identifiable {
 
 // Load and sort all entries from pokedex.json in the bundle
 let allPokedexEntries: [PokedexEntry] = {
-    guard let url = Bundle.main.url(forResource: "pokedex", withExtension: "json"),
+    guard let url = Bundle.main.url(forResource: "pokedex", withExtension: "json", subdirectory: "Data"),
           let data = try? Data(contentsOf: url),
           let entries = try? JSONDecoder().decode([PokedexEntry].self, from: data) else {
-        return []
+                return []
     }
+    
     return entries.sorted { $0.id < $1.id }
 }()
 
