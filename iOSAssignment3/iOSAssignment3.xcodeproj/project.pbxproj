@@ -38,9 +38,30 @@
 		CE61AD792DCB315200C81FBB /* types.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = types.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		CE8C963B2DCDB4D00005C5B5 /* Exceptions for "iOSAssignment3" folder in "iOSAssignment3Tests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Assets.xcassets,
+			);
+			target = CE12A86C2DC478C500DC59E1 /* iOSAssignment3Tests */;
+		};
+		CE8C963C2DCDB4D00005C5B5 /* Exceptions for "iOSAssignment3" folder in "iOSAssignment3UITests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Assets.xcassets,
+			);
+			target = CE12A8762DC478C500DC59E1 /* iOSAssignment3UITests */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		CE12A85F2DC478C300DC59E1 /* iOSAssignment3 */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				CE8C963B2DCDB4D00005C5B5 /* Exceptions for "iOSAssignment3" folder in "iOSAssignment3Tests" target */,
+				CE8C963C2DCDB4D00005C5B5 /* Exceptions for "iOSAssignment3" folder in "iOSAssignment3UITests" target */,
+			);
 			path = iOSAssignment3;
 			sourceTree = "<group>";
 		};
