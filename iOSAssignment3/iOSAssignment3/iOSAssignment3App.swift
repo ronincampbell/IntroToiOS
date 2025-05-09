@@ -11,7 +11,7 @@ import SwiftUI
 struct iOSAssignment3App: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            PokemonBattleCalculatorView()
         }
     }
 }
