@@ -8,11 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		6A4D4FF52DCDB68A00515AE4 /* PokemonBattleCalculatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4D4FF42DCDB68900515AE4 /* PokemonBattleCalculatorView.swift */; };
+		6A5E23712DD0968800C60CBD /* CalculateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5E23702DD0968800C60CBD /* CalculateView.swift */; };
 		6AA5D4842DCF320100CD475C /* moves.json in Resources */ = {isa = PBXBuildFile; fileRef = 6ADB8D8B2DCF2DCC00DA0F81 /* moves.json */; };
 		6AA5D4852DCF320100CD475C /* pokedex.json in Resources */ = {isa = PBXBuildFile; fileRef = 6ADB8D8C2DCF2DCC00DA0F81 /* pokedex.json */; };
 		6AA5D4862DCF320100CD475C /* types.json in Resources */ = {isa = PBXBuildFile; fileRef = 6ADB8D8D2DCF2DCC00DA0F81 /* types.json */; };
 		6AA5D48A2DCF41DB00CD475C /* PokemonSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AA5D4892DCF41DB00CD475C /* PokemonSelectionView.swift */; };
 		6AA5D48C2DCF441900CD475C /* MoveListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AA5D48B2DCF441900CD475C /* MoveListView.swift */; };
+		6AA5D4902DCF53C600CD475C /* SelectInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AA5D48F2DCF53C600CD475C /* SelectInfoView.swift */; };
 		6AFAD0CD2DCDB43600063E06 /* iOSAssignment3App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AFAD0CC2DCDB43600063E06 /* iOSAssignment3App.swift */; };
 		6AFAD0D12DCDB43900063E06 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6AFAD0D02DCDB43900063E06 /* Assets.xcassets */; };
 		6AFAD0D42DCDB43900063E06 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6AFAD0D32DCDB43900063E06 /* Preview Assets.xcassets */; };
@@ -21,8 +23,10 @@
 
 /* Begin PBXFileReference section */
 		6A4D4FF42DCDB68900515AE4 /* PokemonBattleCalculatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PokemonBattleCalculatorView.swift; sourceTree = "<group>"; };
+		6A5E23702DD0968800C60CBD /* CalculateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculateView.swift; sourceTree = "<group>"; };
 		6AA5D4892DCF41DB00CD475C /* PokemonSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonSelectionView.swift; sourceTree = "<group>"; };
 		6AA5D48B2DCF441900CD475C /* MoveListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveListView.swift; sourceTree = "<group>"; };
+		6AA5D48F2DCF53C600CD475C /* SelectInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectInfoView.swift; sourceTree = "<group>"; };
 		6ADB8D8B2DCF2DCC00DA0F81 /* moves.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = moves.json; sourceTree = "<group>"; };
 		6ADB8D8C2DCF2DCC00DA0F81 /* pokedex.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = pokedex.json; sourceTree = "<group>"; };
 		6ADB8D8D2DCF2DCC00DA0F81 /* types.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = types.json; sourceTree = "<group>"; };
@@ -44,9 +48,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6AA5D4912DCF554E00CD475C /* Images */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Images;
+			sourceTree = "<group>";
+		};
 		6ADB8D8E2DCF2DCC00DA0F81 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				6AA5D4912DCF554E00CD475C /* Images */,
 				6ADB8D8B2DCF2DCC00DA0F81 /* moves.json */,
 				6ADB8D8C2DCF2DCC00DA0F81 /* pokedex.json */,
 				6ADB8D8D2DCF2DCC00DA0F81 /* types.json */,
@@ -74,8 +86,10 @@
 		6AFAD0CB2DCDB43600063E06 /* iOSAssignment3 */ = {
 			isa = PBXGroup;
 			children = (
+				6A5E23702DD0968800C60CBD /* CalculateView.swift */,
 				6AFAD0CC2DCDB43600063E06 /* iOSAssignment3App.swift */,
 				6A4D4FF42DCDB68900515AE4 /* PokemonBattleCalculatorView.swift */,
+				6AA5D48F2DCF53C600CD475C /* SelectInfoView.swift */,
 				6AA5D48B2DCF441900CD475C /* MoveListView.swift */,
 				6AA5D4892DCF41DB00CD475C /* PokemonSelectionView.swift */,
 				6AFAD0D02DCDB43900063E06 /* Assets.xcassets */,
@@ -167,6 +181,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6AA5D4902DCF53C600CD475C /* SelectInfoView.swift in Sources */,
+				6A5E23712DD0968800C60CBD /* CalculateView.swift in Sources */,
 				6A4D4FF52DCDB68A00515AE4 /* PokemonBattleCalculatorView.swift in Sources */,
 				6AA5D48A2DCF41DB00CD475C /* PokemonSelectionView.swift in Sources */,
 				6AFAD0CD2DCDB43600063E06 /* iOSAssignment3App.swift in Sources */,

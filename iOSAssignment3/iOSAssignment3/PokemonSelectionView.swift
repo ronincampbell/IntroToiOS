@@ -7,12 +7,37 @@
 
 import SwiftUI
 
-struct PokedexEntry: Decodable, Identifiable {
+struct BaseStats: Decodable{
+    let hp: Int
+    let attack: Int
+    let defense: Int
+    let special_attack: Int
+    let special_defense: Int
+    let speed: Int
+    enum CodingKeys: String, CodingKey {
+        case hp = "HP"
+        case attack = "Attack"
+        case defense = "Defense"
+        case special_attack = "Sp. Attack"
+        case special_defense = "Sp. Defense"
+        case speed = "Speed"
+    }
+}
+
+struct Name: Decodable {
+    let english: String
+}
+
+struct ImageURLs: Decodable {
+    let sprite: String
+}
+
+class PokedexEntry: Decodable, Identifiable, ObservableObject {
     let id: Int
-    struct Name: Decodable { let english: String }
     let name: Name
-    struct ImageURLs: Decodable { let sprite: String }
     let image: ImageURLs
+    let base: BaseStats?
+    let type: [String]
 }
 
 // Load and sort all entries from pokedex.json in the bundle
@@ -34,7 +59,7 @@ struct PokemonSelectionView: View {
 
     var filteredEntries: [PokedexEntry] {
         allPokedexEntries
-            .filter { searchText.isEmpty || $0.name.english.localizedCaseInsensitiveContains(searchText) }
+            .filter { (searchText.isEmpty || $0.name.english.localizedCaseInsensitiveContains(searchText)) && $0.base != nil }
             .sorted { $0.id < $1.id }
     }
 

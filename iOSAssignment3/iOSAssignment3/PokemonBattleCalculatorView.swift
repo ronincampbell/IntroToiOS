@@ -29,11 +29,8 @@ struct PokemonBattleCalculatorView: View {
 
                 Spacer()
 
-                if let p1 = selectedPokemon1 {
-                    MoveListView(pokemonName: p1.name.english)
-                }
-                if let p2 = selectedPokemon2 {
-                    MoveListView(pokemonName: p2.name.english)
+                if (selectedPokemon1 != nil && selectedPokemon2 != nil){
+                    SelectInfoView(chosen_pkm: selectedPokemon1!, enemy_pkm: selectedPokemon2!)
                 }
 
                 Spacer()
@@ -69,29 +66,38 @@ struct SelectionBox: View {
 
     var body: some View {
         Button(action: action) {
-            ZStack {
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(Color.blue)
-                    .frame(width: 140, height: 140)
-                if let entry = entry, let url = URL(string: entry.image.sprite) {
-                    AsyncImage(url: url) { phase in
-                        if let img = phase.image {
-                            img
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 100, height: 100)
-                        } else if phase.error != nil {
-                            Image(systemName: "exclamationmark.triangle")
-                                .foregroundColor(.red)
-                                .font(.largeTitle)
-                        } else {
-                            ProgressView()
+            VStack(alignment: .center){
+                ZStack {
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(Color.blue)
+                        .frame(width: 140, height: 140)
+                    if let entry = entry, let url = URL(string: entry.image.sprite) {
+                        AsyncImage(url: url) { phase in
+                            if let img = phase.image {
+                                img
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 100, height: 100)
+                            } else if phase.error != nil {
+                                Image(systemName: "exclamationmark.triangle")
+                                    .foregroundColor(.red)
+                                    .font(.largeTitle)
+                            } else {
+                                ProgressView()
+                            }
                         }
+                    } else {
+                        Text("Select \(placeholder)")
+                            .foregroundColor(.white)
+                            .bold()
                     }
-                } else {
-                    Text("Select \(placeholder)")
+                }
+                if (entry != nil){
+                    Text(entry!.name.english)
+                        .font(.subheadline)
+                }else{
+                    Text("")
                         .foregroundColor(.white)
-                        .bold()
                 }
             }
         }
