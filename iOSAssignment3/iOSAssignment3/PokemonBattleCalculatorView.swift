@@ -17,7 +17,7 @@ struct PokemonBattleCalculatorView: View {
     var body: some View {
         NavigationView {
             VStack(spacing: 20) {
-                HStack(spacing: 30) {
+                HStack(alignment: .center, spacing: 30) {
                     SelectionBox(entry: selectedPokemon1,
                                  placeholder: "1",
                                  action: { showingSelectorForFirst = true })

@@ -32,63 +32,112 @@ struct CalculateView: View {
     var pkm_attack: Int
     @ObservedObject var chosen_move: Move
     @State var damage : Double = 0
+    @State var offset: CGFloat = 0
+    let animtime: Double = 0.5
     var body: some View {
         NavigationView{
-            VStack{
-                Text("Median Damage: \(damage)")
-                    .onAppear(perform: {
-                        var defense: Double
-                        if (physical_moves.contains(chosen_move.type)){
-                            defense = Double(chosen_pkm.base!.defense)
-                            defense = defense + (Double(chosen_pkm.base!.defense) * 0.02 * Double(pkm_level))
-                        }else{
-                            defense = Double(enemy_pkm.base!.special_defense)
-                            defense = defense + (Double(enemy_pkm.base!.special_defense) * 0.02 * Double(pkm_level))
+            VStack(spacing: 20){
+                HStack(alignment: .center, spacing: 30) {
+                    PokeView(entry: chosen_pkm, colour: .green)
+                        .offset(x: offset)
+                        .onAppear {
+                            withAnimation(.easeInOut(duration: animtime).delay(0.5)) { offset = 20 }
+                            withAnimation(.easeInOut(duration: animtime).delay(0.5 + animtime)) { offset = 0 }
                         }
-                        damage = Double(pkm_level) * 2
-                        damage = damage / 5
-                        damage = damage + 2
-                        damage = damage * Double(chosen_move.power!)
-                        damage = damage * (Double(pkm_attack) / defense)
-                        damage = damage / 50
-                        damage = damage + 2
-                        // MARK: Type effectiveness
-                        for i in allTypes{
-                            if (i.english == chosen_move.type){
-                                for j in enemy_pkm.type{
-                                    if (i.effective.contains(j)){
-                                        damage = damage * 2
-                                    }else if (i.inaffective.contains(j)){
-                                        damage = damage / 2
-                                    }else if (i.no_effect.contains(j)){
-                                        damage = 0
-                                    }
+                    PokeView(entry: enemy_pkm, colour: .red)
+                        .offset(x: -offset)
+                }
+                .padding(.bottom)
+                HStack{
+                    Text("Median Damage: \(damage)")
+                }
+                HStack{
+                    Text("Lower Bound: \(damage * 0.85)")
+                }
+                HStack{
+                    Text("Upper Bound: \(damage * 1.5)")
+                }
+                .navigationTitle("Calculation Result")
+                .onAppear(perform: {
+                    var defense: Double
+                    if (physical_moves.contains(chosen_move.type)){
+                        defense = Double(chosen_pkm.base!.defense)
+                        defense = defense + (Double(chosen_pkm.base!.defense) * 0.02 * Double(pkm_level))
+                    }else{
+                        defense = Double(enemy_pkm.base!.special_defense)
+                        defense = defense + (Double(enemy_pkm.base!.special_defense) * 0.02 * Double(pkm_level))
+                    }
+                    damage = Double(pkm_level) * 2
+                    damage = damage / 5
+                    damage = damage + 2
+                    damage = damage * Double(chosen_move.power!)
+                    damage = damage * (Double(pkm_attack) / defense)
+                    damage = damage / 50
+                    damage = damage + 2
+                    // MARK: Type effectiveness
+                    for i in allTypes{
+                        if (i.english == chosen_move.type){
+                            for j in enemy_pkm.type{
+                                if (i.effective.contains(j)){
+                                    damage = damage * 2
+                                }else if (i.inaffective.contains(j)){
+                                    damage = damage / 2
+                                }else if (i.no_effect.contains(j)){
+                                    damage = 0
                                 }
-                                break
                             }
+                            break
                         }
-                        // MARK: STAB
-                        if (chosen_pkm.type.contains(chosen_move.type)){
-                            damage = damage * 1.5
+                    }
+                    // MARK: STAB
+                    if (chosen_pkm.type.contains(chosen_move.type)){
+                        damage = damage * 1.5
+                    }
+                })
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button("Return") {
+                            dismiss()
                         }
-                    })
-                Text("Lower Bound: \(damage * 0.85)")
-                Text("Upper Bound: \(damage * 1.5)")
-            }
-            .navigationTitle("Calculation Result")
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Return") {
-                        dismiss()
                     }
                 }
             }
         }
     }
 }
-
-/*struct CalculateView_Previews: PreviewProvider {
-    static var previews: some View {
-        CalculateView(chosen_pkm: .constant(PokedexEntry(id: 1, name: Name(english: "Bulbasaur"), image: ImageURLs(sprite: "https://raw.githubusercontent.com/Purukitto/pokemon-data.json/master/images/pokedex/sprites/001.png"), base: BaseStats(hp: 45, attack: 49, defense: 49, special_attack: 65, special_defense: 65, speed: 45))), enemy_pkm: .constant(PokedexEntry(id: 1, name: Name(english: "Bulbasaur"), image: ImageURLs(sprite: "https://raw.githubusercontent.com/Purukitto/pokemon-data.json/master/images/pokedex/sprites/001.png"), base: BaseStats(hp: 45, attack: 49, defense: 49, special_attack: 65, special_defense: 65, speed: 45))), pkm_level: 50, pkm_attack: 20, chosen_move: .constant(Move(id: 1, ename: "Pound", type: "Normal", power: 40)))
+    
+struct PokeView: View{
+    let entry: PokedexEntry
+    let colour: Color
+    var body: some View{
+        VStack(alignment: .center){
+            ZStack {
+                Circle()
+                    .strokeBorder(.gray, lineWidth: 5)
+                    .background(Circle().fill(colour))
+                    .frame(width: 100, height: 100)
+                    
+                if let url = URL(string: entry.image.sprite) {
+                    AsyncImage(url: url) { phase in
+                        if let img = phase.image {
+                            img
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 100, height: 100)
+                        } else if phase.error != nil {
+                            Image(systemName: "exclamationmark.triangle")
+                                .foregroundColor(.red)
+                                .font(.largeTitle)
+                        } else {
+                            ProgressView()
+                        }
+                    }
+                    .drawingGroup()
+                }
+            }
+            Text(entry.name.english)
+                .font(.subheadline)
+        }
+        
     }
-}*/
+}
