@@ -7,23 +7,6 @@
 
 import SwiftUI
 
-struct PokeType: Decodable{
-    let english: String
-    let effective: [String]
-    let inaffective: [String]
-    let no_effect: [String]
-    
-}
-
-let allTypes: [PokeType] = {
-    guard let url = Bundle.main.url(forResource: "types", withExtension: "json"),
-          let data = try? Data(contentsOf: url),
-          let entries = try? JSONDecoder().decode([PokeType].self, from: data) else {
-        return []
-    }
-    return entries
-}()
-
 struct CalculateView: View {
     @Environment(\.dismiss) private var dismiss
     @ObservedObject var chosen_pkm: PokedexEntry
@@ -33,6 +16,9 @@ struct CalculateView: View {
     @ObservedObject var chosen_move: Move
     @State var damage : Double = 0
     @State var offset: CGFloat = 0
+    @State var estimate_opp_hp: Double = 10
+    @State var fade_in_opacity: Double = 0.0
+    @State var scroll_amt: Double = 0.0
     let animtime: Double = 0.5
     var body: some View {
         NavigationView{
@@ -42,12 +28,29 @@ struct CalculateView: View {
                         .offset(x: offset)
                         .onAppear {
                             withAnimation(.easeInOut(duration: animtime).delay(0.5)) { offset = 20 }
-                            withAnimation(.easeInOut(duration: animtime).delay(0.5 + animtime)) { offset = 0 }
+                            withAnimation(.easeInOut(duration: animtime).delay(0.5 + animtime)) { offset = 0}
+                            withAnimation(.easeInOut(duration: animtime).delay(1.0 + animtime)){ fade_in_opacity = 1.0 }
+                            withAnimation(.easeInOut(duration: 1.0).delay(1.0 + animtime)){ scroll_amt = 1.0 }
                         }
                     PokeView(entry: enemy_pkm, colour: .red)
                         .offset(x: -offset)
                 }
                 .padding(.bottom)
+                ZStack(alignment: .leading){
+                    RoundedRectangle(cornerRadius: 3)
+                        .foregroundColor(.green)
+                        .frame(width: 300 - (((damage / estimate_opp_hp) * 300) * scroll_amt), height: 10)
+                        .opacity(fade_in_opacity)
+                        .zIndex(2)
+                    RoundedRectangle(cornerRadius: 3)
+                        .foregroundColor(.red)
+                        .frame(width: 300, height: 10)
+                        .opacity(fade_in_opacity)
+                        .zIndex(1)
+                    
+                }
+                Text("HP Estimate: \(Int(estimate_opp_hp - damage))/\(Int(estimate_opp_hp))")
+                    .opacity(fade_in_opacity)
                 HStack{
                     Text("Median Damage: \(damage)")
                 }
@@ -93,6 +96,11 @@ struct CalculateView: View {
                     if (chosen_pkm.type.contains(chosen_move.type)){
                         damage = damage * 1.5
                     }
+                    // MARK: Enemy HP
+                    estimate_opp_hp = 2.0 * Double(enemy_pkm.base!.hp)
+                    estimate_opp_hp = estimate_opp_hp * Double(pkm_level)
+                    estimate_opp_hp = estimate_opp_hp / 100.0
+                    estimate_opp_hp = estimate_opp_hp + 5.0
                 })
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
@@ -103,41 +111,5 @@ struct CalculateView: View {
                 }
             }
         }
-    }
-}
-    
-struct PokeView: View{
-    let entry: PokedexEntry
-    let colour: Color
-    var body: some View{
-        VStack(alignment: .center){
-            ZStack {
-                Circle()
-                    .strokeBorder(.gray, lineWidth: 5)
-                    .background(Circle().fill(colour))
-                    .frame(width: 100, height: 100)
-                    
-                if let url = URL(string: entry.image.sprite) {
-                    AsyncImage(url: url) { phase in
-                        if let img = phase.image {
-                            img
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 100, height: 100)
-                        } else if phase.error != nil {
-                            Image(systemName: "exclamationmark.triangle")
-                                .foregroundColor(.red)
-                                .font(.largeTitle)
-                        } else {
-                            ProgressView()
-                        }
-                    }
-                    .drawingGroup()
-                }
-            }
-            Text(entry.name.english)
-                .font(.subheadline)
-        }
-        
     }
 }
