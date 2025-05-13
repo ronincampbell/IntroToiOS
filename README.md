@@ -9,3 +9,5 @@ This Pokemon Damage Simulator was created for the University of Technology Sydne
 
 
 This project is courtesy of the game 𝓯𝓻𝓮𝓪𝓴𝓼
+
+The canonical URL to this repository is https://github.com/ronincampbell/IntroToiOS
