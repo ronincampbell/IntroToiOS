@@ -56,10 +56,12 @@ struct SelectInfoView: View {
             .padding(.trailing)
             
         }
+        Spacer()
         Button(action: {if (chosen_move != nil){show_calculation = true}}){
             RoundedRectangle(cornerRadius: 25)
                 .fill(chosen_move == nil ? .red : .green)
         }
+        .frame(maxHeight: 200)
         .overlay(alignment: .center){
             if (chosen_move != nil){
                 Text("Calculate Damage")

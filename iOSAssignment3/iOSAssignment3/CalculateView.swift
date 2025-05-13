@@ -49,18 +49,57 @@ struct CalculateView: View {
                         .zIndex(1)
                     
                 }
-                Text("HP Estimate: \(Int(estimate_opp_hp - damage))/\(Int(estimate_opp_hp))")
+                Text("HP Estimate: \(lround(estimate_opp_hp - damage))/\(Int(estimate_opp_hp))")
                     .opacity(fade_in_opacity)
                 HStack{
-                    Text("Median Damage: \(damage)")
+                    RoundedRectangle(cornerRadius: 10)
+                        .foregroundColor(.purple)
+                        .frame(width: 50, height: 60)
+                        .overlay(alignment: .center){
+                            Text("⚔️")
+                                .font(.system(size: 40))
+                        }
+                    RoundedRectangle(cornerRadius: 10)
+                        .foregroundColor(.purple)
+                        .frame(width: 250, height: 60)
+                        .overlay(alignment: .center){
+                            Text("Median Damage: " + String(format: "%g", damage))
+                        }
                 }
+                .opacity(fade_in_opacity)
                 HStack{
-                    Text("Lower Bound: \(damage * 0.85)")
+                    RoundedRectangle(cornerRadius: 10)
+                        .foregroundColor(.mint)
+                        .frame(width: 50, height: 60)
+                        .overlay(alignment: .center){
+                            Text("📉")
+                                .font(.system(size: 40))
+                        }
+                    RoundedRectangle(cornerRadius: 10)
+                        .foregroundColor(.mint)
+                        .frame(width: 250, height: 60)
+                        .overlay(alignment: .center){
+                            Text("Lower Bound: " + String(format: "%g", (damage * 0.85)))
+                        }
+                    
                 }
+                .opacity(fade_in_opacity)
                 HStack{
-                    Text("Upper Bound: \(damage * 1.5)")
+                    RoundedRectangle(cornerRadius: 10)
+                        .foregroundColor(.orange)
+                        .frame(width: 50, height: 60)
+                        .overlay(alignment: .center){
+                            Text("💥")
+                                .font(.system(size: 40))
+                        }
+                    RoundedRectangle(cornerRadius: 10)
+                        .foregroundColor(.orange)
+                        .frame(width: 250, height: 60)
+                        .overlay(alignment: .center){
+                            Text("Upper Bound: " + String(format: "%g", (damage * 1.5)))
+                        }
                 }
-                .navigationTitle("Calculation Result")
+                .opacity(fade_in_opacity)
                 .onAppear(perform: {
                     var defense: Double
                     if (physical_moves.contains(chosen_move.type)){
@@ -109,6 +148,7 @@ struct CalculateView: View {
                         }
                     }
                 }
+                .navigationTitle("Calculation Result")
             }
         }
     }

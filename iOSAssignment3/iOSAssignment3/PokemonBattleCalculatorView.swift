@@ -15,7 +15,7 @@ struct PokemonBattleCalculatorView: View {
     @State private var showingSelectorForSecond = false
 
     var body: some View {
-        NavigationView {
+        //NavigationView {
             VStack(spacing: 20) {
                 HStack(alignment: .center, spacing: 30) {
                     SelectionBox(entry: selectedPokemon1,
@@ -54,7 +54,7 @@ struct PokemonBattleCalculatorView: View {
                     title: "Select Pokémon 2"
                 )
             }
-        }
+       // }
     }
 }
 
